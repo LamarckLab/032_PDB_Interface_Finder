@@ -99,6 +99,7 @@ def min_distance_between_residues(res_atoms, lig_atoms):
                 min_d2 = d2
     return math.sqrt(min_d2) if min_d2 < float("inf") else float("inf")
 
+# 当一对原子平方距离小于阈值平方, 就判定为存在相互作用
 def find_contacts(pdb_path, chain1, chain2, cutoff, heavy_only=True, std_aa_only=True):
     chain1_res = load_chain_atoms(pdb_path, chain1, heavy_only, std_aa_only)
     chain2_res = load_chain_atoms(pdb_path, chain2, heavy_only, std_aa_only)
@@ -131,6 +132,7 @@ def find_contacts(pdb_path, chain1, chain2, cutoff, heavy_only=True, std_aa_only
     contacts.sort(key=lambda x: x[2])  # 按最小距离升序
     return contacts
 
+# 写出CSV
 def save_contacts_csv(contacts, out_csv):
     os.makedirs(os.path.dirname(out_csv), exist_ok=True)
     with open(out_csv, "w", newline="", encoding="utf-8") as fh:
@@ -173,6 +175,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
