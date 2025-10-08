@@ -21,12 +21,12 @@ STANDARD_AA = {
 def is_atom_line(line: str) -> bool:
     return line.startswith("ATOM") or line.startswith("HETATM")
 
+# ======按照PDB固定列宽进行切片解析  ======
 def parse_atom_record(line: str):
-    # 基于 PDB v3 固定宽度格式解析
     try:
         record = line[0:6].strip()
-        atom_name = line[12:16].strip()
-        altloc = line[16].strip()
+        atom_name = line[12:16].strip() # 原子名
+        altloc = line[16].strip() # 构象标记
         resname = line[17:20].strip()
         chain_id = line[21].strip()
         resseq = line[22:26].strip()
@@ -169,6 +169,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
