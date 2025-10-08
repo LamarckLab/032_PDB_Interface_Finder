@@ -25,13 +25,13 @@ def is_atom_line(line: str) -> bool:
 def parse_atom_record(line: str):
     try:
         record = line[0:6].strip()
-        atom_name = line[12:16].strip() # 原子名
+        atom_name = line[12:16].strip()
         altloc = line[16].strip() # 构象标记
-        resname = line[17:20].strip()
-        chain_id = line[21].strip()
-        resseq = line[22:26].strip()
+        resname = line[17:20].strip() # 残基名
+        chain_id = line[21].strip() 
+        resseq = line[22:26].strip() # 残基序号
         icode  = line[26].strip()
-        x = float(line[30:38]); y = float(line[38:46]); z = float(line[46:54])
+        x = float(line[30:38]); y = float(line[38:46]); z = float(line[46:54]) # xyz坐标
         element = line[76:78].strip() if len(line) >= 78 else ""
     except Exception:
         return None
@@ -169,6 +169,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
