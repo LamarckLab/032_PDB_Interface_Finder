@@ -82,12 +82,13 @@ def load_chain_atoms(pdb_path, chain_id, heavy_only=True, std_aa_only=True):
     # 清理空残基
     return {k: v for k, v in residues.items() if v}
 
-# 打印残基标识的便携函数，把四元组格式化成易读标签
+# 打印残基标识的便携函数，把四元组格式化成易读标签，如:TYR-453:A 或 GLU-35A:B
 def pretty_res_label(key):
     chain, resseq, icode, resname = key
     icode = icode or ""
     return f"{resname}-{resseq}{icode}:{chain}"
 
+# 双循环遍历残基间原子对的欧氏距离
 def min_distance_between_residues(res_atoms, lig_atoms):
     min_d2 = float("inf")
     for px, py, pz, _ in res_atoms:
@@ -172,6 +173,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
