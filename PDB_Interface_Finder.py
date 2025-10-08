@@ -1,7 +1,7 @@
 import os, math, csv
 from collections import defaultdict
 
-# ====== 参数定义 ======
+# ======= 参数定义 =======
 INPUT_PDB  = r"C:\Users\Lamarck\Desktop\input.pdb" # 输入文件路径
 OUTPUT_CSV = r"C:\Users\Lamarck\Desktop\interaction.csv" # 输出文件路径
 CHAIN1 = "A"
@@ -9,14 +9,15 @@ CHAIN2 = "B"
 CUTOFF = 4.0          # Å
 HEAVY_ONLY = True     # 仅计算重原子（忽略氢）
 STD_AA_ONLY = True    # 仅考虑标准氨基酸（排除配体/水）
-# ==================================
 
+# ======= 标准氨基酸集合 =======
 STANDARD_AA = {
     "ALA","ARG","ASN","ASP","CYS","GLN","GLU","GLY",
     "HIS","ILE","LEU","LYS","MET","PHE","PRO","SER",
     "THR","TRP","TYR","VAL"
 }
 
+# ====== 仅处理 “ATOM” 和 “HETATM” 开头的坐标行 ======
 def is_atom_line(line: str) -> bool:
     return line.startswith("ATOM") or line.startswith("HETATM")
 
@@ -168,5 +169,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
