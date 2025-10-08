@@ -47,16 +47,18 @@ def parse_atom_record(line: str):
         "element": element
     }
 
+# 识别是否为氢
 def is_hydrogen(a) -> bool:
     el = (a.get("element") or "").upper()
     if el in ("H", "D"):
         return True
     return a["atom"].upper().startswith("H")
 
+# 用四元组唯一标识一个残基：链、编号、插入码、三字母名
 def residue_key(a):
-    # 唯一标识一个残基：链、编号、插入码、三字母名
     return (a["chain"], a["resseq"], a["icode"], a["resname"])
 
+# 读取并筛选某条链的原子
 def load_chain_atoms(pdb_path, chain_id, heavy_only=True, std_aa_only=True):
     residues = defaultdict(list)  # key -> list[(x,y,z,atom_name)]
     with open(pdb_path, "r", encoding="utf-8", errors="ignore") as f:
@@ -80,6 +82,7 @@ def load_chain_atoms(pdb_path, chain_id, heavy_only=True, std_aa_only=True):
     # 清理空残基
     return {k: v for k, v in residues.items() if v}
 
+# 打印残基标识的便携函数，把四元组格式化成易读标签
 def pretty_res_label(key):
     chain, resseq, icode, resname = key
     icode = icode or ""
@@ -169,6 +172,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
