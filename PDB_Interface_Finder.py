@@ -1,9 +1,9 @@
 import os, math, csv
 from collections import defaultdict
 
-# ====== 你可以在这里修改参数 ======
-INPUT_PDB  = r"C:\Users\Lamarck\Desktop\input.pdb"
-OUTPUT_CSV = r"C:\Users\Lamarck\Desktop\interaction.csv"
+# ====== 参数定义 ======
+INPUT_PDB  = r"C:\Users\Lamarck\Desktop\input.pdb" # 输入文件路径
+OUTPUT_CSV = r"C:\Users\Lamarck\Desktop\interaction.csv" # 输出文件路径
 CHAIN1 = "A"
 CHAIN2 = "B"
 CUTOFF = 4.0          # Å
@@ -168,4 +168,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
