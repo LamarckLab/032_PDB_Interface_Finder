@@ -146,16 +146,19 @@ def save_contacts_csv(contacts, out_csv):
             w.writerow([n1, r1, i1, n2, r2, i2, f"{d:.3f}"])
 
 def main():
+    # 先检查文件是否存在
     if not os.path.exists(INPUT_PDB):
         print(f"[ERROR] 找不到输入文件：{INPUT_PDB}")
         return
 
+    # 打印运行配置，便于记录与复现
     print("== 接触计算开始 ==")
     print(f"PDB路径 : {INPUT_PDB}")
     print(f"链对   : {CHAIN1} vs {CHAIN2}")
     print(f"阈值   : {CUTOFF:.2f} Å")
     print(f"重原子 : {HEAVY_ONLY} | 仅标准氨基酸 : {STD_AA_ONLY}")
 
+    # 计算满足条件的残基对
     contacts = find_contacts(
         INPUT_PDB, CHAIN1, CHAIN2, CUTOFF,
         heavy_only=HEAVY_ONLY, std_aa_only=STD_AA_ONLY
@@ -175,6 +178,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
