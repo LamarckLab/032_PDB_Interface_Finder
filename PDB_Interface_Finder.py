@@ -168,7 +168,7 @@ def main():
     print(f"\n共找到可能的结合残基对：{len(contacts)}")
     preview_n = min(10, len(contacts))
     if preview_n > 0:
-        print("\n示例（前10条或更少）：")
+        print("\n前十个结果：")
         print("# Residue(chain1)\tResidue(chain2)\tMinDist(Å)")
         for k1, k2, d in contacts[:preview_n]:
             print(f"{pretty_res_label(k1)}\t{pretty_res_label(k2)}\t{d:.3f}")
@@ -178,6 +178,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
