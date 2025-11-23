@@ -2,8 +2,8 @@ import os, math, csv
 from collections import defaultdict
 
 # ======= 参数定义 =======
-INPUT_PDB  = r"C:\Users\Lamarck\Desktop\input.pdb" # 输入文件路径
-OUTPUT_CSV = r"C:\Users\Lamarck\Desktop\interaction.csv" # 输出文件路径
+INPUT_PDB  = r"C:\Users\Lamarck\Desktop\8T25.pdb"  # 输入文件路径
+OUTPUT_CSV = r"C:\Users\Lamarck\Desktop\8T25_interaction.csv"  # 输出文件路径
 CHAIN1 = "A"
 CHAIN2 = "B"
 CUTOFF = 4.0          # Å
@@ -17,21 +17,28 @@ STANDARD_AA = {
     "THR","TRP","TYR","VAL"
 }
 
+# ======= 三字母氨基酸 → 一字母 =======
+AA3_to_AA1 = {
+    "ALA":"A","ARG":"R","ASN":"N","ASP":"D","CYS":"C","GLN":"Q","GLU":"E","GLY":"G",
+    "HIS":"H","ILE":"I","LEU":"L","LYS":"K","MET":"M","PHE":"F","PRO":"P","SER":"S",
+    "THR":"T","TRP":"W","TYR":"Y","VAL":"V"
+}
+
 # ====== 仅处理 “ATOM” 和 “HETATM” 开头的坐标行 ======
 def is_atom_line(line: str) -> bool:
     return line.startswith("ATOM") or line.startswith("HETATM")
 
-# ======按照PDB固定列宽进行切片解析  ======
+# ====== 按照PDB固定列宽进行切片解析  ======
 def parse_atom_record(line: str):
     try:
         record = line[0:6].strip()
         atom_name = line[12:16].strip()
-        altloc = line[16].strip() # 构象标记
-        resname = line[17:20].strip() # 残基名
-        chain_id = line[21].strip() 
-        resseq = line[22:26].strip() # 残基序号
+        altloc = line[16].strip()  # 构象标记
+        resname = line[17:20].strip()  # 残基名
+        chain_id = line[21].strip()
+        resseq = line[22:26].strip()  # 残基序号
         icode  = line[26].strip()
-        x = float(line[30:38]); y = float(line[38:46]); z = float(line[46:54]) # xyz坐标
+        x = float(line[30:38]); y = float(line[38:46]); z = float(line[46:54])  # xyz坐标
         element = line[76:78].strip() if len(line) >= 78 else ""
     except Exception:
         return None
@@ -82,7 +89,7 @@ def load_chain_atoms(pdb_path, chain_id, heavy_only=True, std_aa_only=True):
     # 清理空残基
     return {k: v for k, v in residues.items() if v}
 
-# 打印残基标识的便携函数，把四元组格式化成易读标签，如:TYR-453:A 或 GLU-35A:B
+# 打印残基标识的便捷函数，把四元组格式化成易读标签，如: TYR-453:A 或 GLU-35A:B
 def pretty_res_label(key):
     chain, resseq, icode, resname = key
     icode = icode or ""
@@ -132,18 +139,23 @@ def find_contacts(pdb_path, chain1, chain2, cutoff, heavy_only=True, std_aa_only
     contacts.sort(key=lambda x: x[2])  # 按最小距离升序
     return contacts
 
-# 写出CSV
+# 写出CSV（残基名改为一字母）
 def save_contacts_csv(contacts, out_csv):
     os.makedirs(os.path.dirname(out_csv), exist_ok=True)
     with open(out_csv, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
-        w.writerow(["chain1_resname","chain1_resseq","chain1_icode",
-                    "chain2_resname","chain2_resseq","chain2_icode",
+        w.writerow(["chain1_resname_1letter","chain1_resseq","chain1_icode",
+                    "chain2_resname_1letter","chain2_resseq","chain2_icode",
                     "min_distance_A"])
         for k1, k2, d in contacts:
             c1, r1, i1, n1 = k1  # chain, resseq, icode, resname
             c2, r2, i2, n2 = k2
-            w.writerow([n1, r1, i1, n2, r2, i2, f"{d:.3f}"])
+
+            # 三字母 → 一字母（如果没在表里，就原样保留）
+            aa1 = AA3_to_AA1.get(n1.upper(), n1)
+            aa2 = AA3_to_AA1.get(n2.upper(), n2)
+
+            w.writerow([aa1, r1, i1, aa2, r2, i2, f"{d:.3f}"])
 
 def main():
     # 先检查文件是否存在
@@ -178,13 +190,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
