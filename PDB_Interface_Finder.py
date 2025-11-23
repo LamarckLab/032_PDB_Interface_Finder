@@ -2,10 +2,10 @@ import os, math, csv
 from collections import defaultdict
 
 # ======= 参数定义 =======
-INPUT_PDB  = r"C:\Users\Lamarck\Desktop\8T25.pdb"  # 输入文件路径
-OUTPUT_CSV = r"C:\Users\Lamarck\Desktop\8T25_interaction.csv"  # 输出文件路径
-CHAIN1 = "A"
-CHAIN2 = "B"
+INPUT_PDB  = r"C:\Users\Lamarck\Desktop\7YVU.pdb"  # 输入文件路径
+OUTPUT_CSV = r"C:\Users\Lamarck\Desktop\7YVU_interaction.csv"  # 输出文件路径
+CHAIN1 = "A"    # 受体链
+CHAIN2 = "B"    # 抗原链
 CUTOFF = 4.0          # Å
 HEAVY_ONLY = True     # 仅计算重原子（忽略氢）
 STD_AA_ONLY = True    # 仅考虑标准氨基酸（排除配体/水）
